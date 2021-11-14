@@ -3,7 +3,7 @@ node_modules/
 /test/
 custom-elements.json
 # top level source
-my-element.js
-my-element.js.map
-my-element.d.ts
-my-element.d.ts.map
+complit.js
+complit.js.map
+complit.d.ts
+complit.d.ts.map
