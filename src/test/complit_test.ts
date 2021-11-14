@@ -11,12 +11,12 @@ import {html} from 'lit/static-html.js';
 
 suite('complit', () => {
   test('is defined', () => {
-    const el = document.createElement('complit');
+    const el = document.createElement('comp-lit');
     assert.instanceOf(el, Complit);
   });
 
   test('renders with default values', async () => {
-    const el = await fixture(html`<complit></complit>`);
+    const el = await fixture(html`<comp-lit></comp-lit>`);
     assert.shadowDom.equal(
       el,
       `
@@ -28,7 +28,7 @@ suite('complit', () => {
   });
 
   test('renders with a set name', async () => {
-    const el = await fixture(html`<complit name="Test"></complit>`);
+    const el = await fixture(html`<comp-lit name="Test"></comp-lit>`);
     assert.shadowDom.equal(
       el,
       `
@@ -40,7 +40,7 @@ suite('complit', () => {
   });
 
   test('handles a click', async () => {
-    const el = (await fixture(html`<complit></complit>`)) as Complit;
+    const el = (await fixture(html`<comp-lit></comp-lit>`)) as Complit;
     const button = el.shadowRoot!.querySelector('button')!;
     button.click();
     await el.updateComplete;
@@ -55,7 +55,7 @@ suite('complit', () => {
   });
 
   test('styling applied', async () => {
-    const el = (await fixture(html`<complit></complit>`)) as Complit;
+    const el = (await fixture(html`<comp-lit></comp-lit>`)) as Complit;
     await el.updateComplete;
     assert.equal(getComputedStyle(el).paddingTop, '16px');
   });

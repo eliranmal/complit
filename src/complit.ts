@@ -14,7 +14,7 @@ import {customElement, property} from 'lit/decorators.js';
  * @slot - This element has a slot
  * @csspart button - The button
  */
-@customElement('complit')
+@customElement('comp-lit')
 export class Complit extends LitElement {
   static override styles = css`
     :host {
@@ -61,8 +61,9 @@ export class Complit extends LitElement {
   }
 }
 
+
 declare global {
   interface HTMLElementTagNameMap {
-    'complit': Complit;
+    'comp-lit': Complit;
   }
 }
