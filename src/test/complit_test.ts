@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import {MyElement} from '../complit.js';
+import {Complit} from '../complit.js';
 
 import {fixture, assert} from '@open-wc/testing';
 import {html} from 'lit/static-html.js';
@@ -12,7 +12,7 @@ import {html} from 'lit/static-html.js';
 suite('complit', () => {
   test('is defined', () => {
     const el = document.createElement('complit');
-    assert.instanceOf(el, MyElement);
+    assert.instanceOf(el, Complit);
   });
 
   test('renders with default values', async () => {
@@ -40,7 +40,7 @@ suite('complit', () => {
   });
 
   test('handles a click', async () => {
-    const el = (await fixture(html`<complit></complit>`)) as MyElement;
+    const el = (await fixture(html`<complit></complit>`)) as Complit;
     const button = el.shadowRoot!.querySelector('button')!;
     button.click();
     await el.updateComplete;
@@ -55,7 +55,7 @@ suite('complit', () => {
   });
 
   test('styling applied', async () => {
-    const el = (await fixture(html`<complit></complit>`)) as MyElement;
+    const el = (await fixture(html`<complit></complit>`)) as Complit;
     await el.updateComplete;
     assert.equal(getComputedStyle(el).paddingTop, '16px');
   });

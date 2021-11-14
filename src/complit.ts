@@ -15,7 +15,7 @@ import {customElement, property} from 'lit/decorators.js';
  * @csspart button - The button
  */
 @customElement('complit')
-export class MyElement extends LitElement {
+export class Complit extends LitElement {
   static override styles = css`
     :host {
       display: block;
@@ -63,6 +63,6 @@ export class MyElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'complit': MyElement;
+    'complit': Complit;
   }
 }
