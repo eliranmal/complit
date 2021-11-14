@@ -10,9 +10,9 @@ import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 
 export default {
-  input: 'complit.js',
+  input: 'out/complit.js',
   output: {
-    file: 'complit.bundled.js',
+    file: 'public/complit.bundled.js',
     format: 'esm',
   },
   onwarn(warning) {

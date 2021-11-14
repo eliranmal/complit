@@ -1,9 +1,6 @@
 node_modules/
+/out/
 /lib/
 /test/
 custom-elements.json
-# top level source
-complit.js
-complit.js.map
-complit.d.ts
-complit.d.ts.map
+/public/complit.bundled.js
