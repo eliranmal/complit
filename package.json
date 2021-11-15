@@ -1,5 +1,5 @@
 {
-  "name": "@lit/lit-starter-ts",
+  "name": "complit",
   "private": true,
   "version": "0.1.0",
   "description": "a neat, lit, auto-complete component",
@@ -7,7 +7,7 @@
   "module": "out/complit.js",
   "type": "module",
   "scripts": {
-    "start": "npm run clean && npm run build && npm run serve",
+    "start": "npm run clean && npm-run-all --parallel build:watch bundle:watch serve:public",
     "prebuild": "npm run clean",
     "build": "tsc",
     "build:watch": "tsc --watch",
@@ -18,6 +18,7 @@
     "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
     "analyze": "cem analyze --litelement --globs \"src/**/*.ts\"",
     "analyze:watch": "cem analyze --litelement --globs \"src/**/*.ts\" --watch",
+    "serve:public": "npx serve public",
     "serve": "wds --watch",
     "serve:prod": "env MODE=prod npm run serve",
     "pretest": "npm run build",
@@ -27,7 +28,8 @@
     "test:prod": "MODE=prod wtr",
     "test:prod:watch": "MODE=prod wtr --watch",
     "prebundle": "npm run build",
-    "bundle": "rollup -c"
+    "bundle": "rollup -c",
+    "bundle:watch": "rollup --watch -c"
   },
   "keywords": [
     "web-components",
