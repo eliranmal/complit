@@ -7,7 +7,8 @@
   "module": "out/complit.js",
   "type": "module",
   "scripts": {
-    "start": "npm run clean && npm-run-all --parallel build:watch bundle:watch serve:public",
+    "start": "npm run build && npm run dev",
+    "dev": "npm-run-all -r --parallel build:watch bundle:watch serve:public",
     "prebuild": "npm run clean",
     "build": "tsc",
     "build:watch": "tsc --watch",
