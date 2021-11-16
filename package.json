@@ -6,9 +6,11 @@
   "main": "out/complit.js",
   "module": "out/complit.js",
   "type": "module",
+  "homepage": "https://eliranmal.github.io/complit/",
   "scripts": {
-    "start": "npm run build && npm run dev",
-    "dev": "npm-run-all -r --parallel build:watch bundle:watch serve:public",
+    "start": "npm run dev",
+    "dev": "npm run build && npm run serve:bundle",
+    "serve:bundle": "npm-run-all -r --parallel build:watch bundle:watch serve:public",
     "prebuild": "npm run clean",
     "build": "tsc",
     "build:watch": "tsc --watch",
@@ -30,7 +32,9 @@
     "test:prod:watch": "MODE=prod wtr --watch",
     "prebundle": "npm run build",
     "bundle": "rollup -c",
-    "bundle:watch": "rollup --watch -c"
+    "bundle:watch": "rollup --watch -c",
+    "predeploy": "npm run build && npm run bundle",
+    "deploy": "gh-pages -b gh-deploy -d public"
   },
   "keywords": [
     "web-components",
@@ -64,6 +68,7 @@
     "@webcomponents/webcomponentsjs": "^2.6.0",
     "deepmerge": "^4.2.2",
     "eslint": "^7.32.0",
+    "gh-pages": "^3.2.3",
     "lit-analyzer": "^1.1.10",
     "mocha": "^9.1.1",
     "npm-run-all": "^4.1.5",
