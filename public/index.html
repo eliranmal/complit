@@ -15,11 +15,10 @@
     />
 
     <script>
-      // - uncomment this to see changes -
-      // const complitEl = document.getElementById('complit')
-      // complitEl.addEventListener('results-changed', ({target: {results}}) => {
-      //   console.log('results changed:', results)
-      // })
+      const complitEl = document.getElementById('complit')
+      complitEl.addEventListener('selected-item-changed', ({target: {selectedItem}}) => {
+        console.log('selected item changed:', selectedItem)
+      })
     </script>
   </body>
 </html>

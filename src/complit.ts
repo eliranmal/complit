@@ -7,9 +7,13 @@ import {customElement, property, state} from 'lit/decorators.js'
 /**
  * complit element
  *
+ * @fires selected-item-changed - indicates when an item was selected in the list by clicking it or pressing enter
  * @fires results-changed - indicates when a match is found and the results are fresh
- * @csspart input - the search term input element
- * @csspart list - the result list element
+ * @csspart term - the search term input
+ * @csspart list - the result list wrapper
+ * @csspart item - the result list item
+ * @csspart highlight - the result list item that's currently highlighted
+ * @csspart match - the result list items matching-text highlights wrapper
  */
 @customElement('comp-lit')
 export class Complit extends LitElement {
@@ -67,16 +71,19 @@ export class Complit extends LitElement {
   protected _taggedResults: string[] = []
 
   @state()
-  protected _highlightedItemIndex: number = -1
+  protected _selectedItemIndex: number = -1
 
   @property({type: String})
   term: string = ''
 
-  @property()
+  @property({type: String})
   dataResource: string = ''
 
-  @property()
+  @property({type: Array})
   results: string[] = []
+
+  @property({type: String})
+  selectedItem: string = ''
 
 
   override connectedCallback() {
@@ -99,7 +106,7 @@ export class Complit extends LitElement {
       <ol part="list">
         ${this._taggedResults.map(
           (datum, index) => {
-            const highlighted = this._highlightedItemIndex === index ? 'highlight' : ''
+            const highlighted = this._selectedItemIndex === index ? 'highlight' : ''
             return html`
             <li
               part="item ${highlighted}"
@@ -128,14 +135,15 @@ export class Complit extends LitElement {
   }
 
   private _handleItemSelection(item: string = '') {
-    console.log('selected item:', item)
+    this.selectedItem = item
+    this.dispatchEvent(new CustomEvent('selected-item-changed'))
   }
 
   private _handleItemEnter({key}: KeyboardEvent) {
     switch (key) {
       case 'Enter':
-        if (this._highlightedItemIndex !== -1) {
-          this._handleItemSelection(this.results[this._highlightedItemIndex])
+        if (this._selectedItemIndex !== -1) {
+          this._handleItemSelection(this.results[this._selectedItemIndex])
         }
         break
       default:
@@ -147,16 +155,16 @@ export class Complit extends LitElement {
     let index
     switch (key) {
       case 'ArrowDown':
-        index = (this._highlightedItemIndex + 1) % this.results.length
+        index = (this._selectedItemIndex + 1) % this.results.length
         break
       case 'ArrowUp':
-        index = (this._highlightedItemIndex - 1) % this.results.length
+        index = (this._selectedItemIndex - 1) % this.results.length
         break
       default:
         break
     }
     if (typeof index !== 'undefined') {
-      this._highlightedItemIndex = index < 0 ? this.results.length + index : index
+      this._selectedItemIndex = index < 0 ? this.results.length + index : index
     }
   }
 
