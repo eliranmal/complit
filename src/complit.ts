@@ -78,7 +78,7 @@ export class Complit extends LitElement {
   protected _selectedItemIndex: number = -1
 
   @state()
-  protected _isFocused: bool = true
+  protected _isFocused: boolean = true
 
   @property({type: String})
   term: string = ''
