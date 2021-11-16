@@ -22,7 +22,15 @@ export class Complit extends LitElement {
       max-width: 800px;
     }
 
-    ol b {
+    input {
+      font-size: 1rem;
+    }
+
+    ol li {
+      cursor: pointer;
+    }
+
+    ol li b {
       color: red;
     }
   `
@@ -70,14 +78,20 @@ export class Complit extends LitElement {
       />
       <ol part="list">
         ${this._taggedResults.map(
-          datum => html`<li>${unsafeHTML(datum)}</li>`
+          datum => html`<li
+            @click=${this._onItemClick}
+          >${unsafeHTML(datum)}</li>`
         )}
       </ol>
     `
   }
 
-  private _onInput({target}: Event) {
-    this._search((target as HTMLInputElement)?.value)
+  private _onInput({currentTarget}: Event) {
+    this._search((currentTarget as HTMLInputElement)?.value)
+  }
+
+  private _onItemClick({currentTarget}: Event) {
+    console.log((currentTarget as HTMLInputElement)?.textContent)
   }
 
   private async _search(term: string) {
