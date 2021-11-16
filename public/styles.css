@@ -1,3 +1,11 @@
 p {
   background-color: lightblue;
 }
+
+comp-lit::part(term) {
+  color: teal;
+}
+
+comp-lit::part(list) {
+  list-style: none;
+}
