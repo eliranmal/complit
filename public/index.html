@@ -15,8 +15,8 @@
     />
 
     <script>
-      const complitEl = document.getElementById('complit')
-      complitEl.addEventListener('selected-item-changed', ({target: {selectedItem}}) => {
+      const complit = document.getElementById('complit')
+      complit.addEventListener('selected-item-changed', ({currentTarget: {selectedItem}}) => {
         console.log('selected item changed:', selectedItem)
       })
     </script>
