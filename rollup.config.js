@@ -1,13 +1,9 @@
-/**
- * @license
- * Copyright 2018 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
+import summary from 'rollup-plugin-summary'
+import {terser} from 'rollup-plugin-terser'
+import resolve from '@rollup/plugin-node-resolve'
+import replace from '@rollup/plugin-replace'
+import commonjs from '@rollup/plugin-commonjs'
 
-import summary from 'rollup-plugin-summary';
-import {terser} from 'rollup-plugin-terser';
-import resolve from '@rollup/plugin-node-resolve';
-import replace from '@rollup/plugin-replace';
 
 export default {
   input: 'out/complit.js',
@@ -22,6 +18,7 @@ export default {
   },
   plugins: [
     replace({'Reflect.decorate': 'undefined'}),
+    commonjs(),
     resolve(),
     terser({
       ecma: 2017,
@@ -35,4 +32,4 @@ export default {
     }),
     summary(),
   ],
-};
+}
