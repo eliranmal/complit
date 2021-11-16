@@ -82,12 +82,12 @@ export class Complit extends LitElement {
   override connectedCallback() {
     this._fetchData()
     super.connectedCallback()
-    document.addEventListener('keydown', this._keyboardListener.bind(this))
+    document.addEventListener('keydown', this._onKeyboardEvent.bind(this))
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
-    document.removeEventListener('keydown', this._keyboardListener.bind(this))
+    document.removeEventListener('keydown', this._onKeyboardEvent.bind(this))
     this._data = []
   }
 
@@ -118,32 +118,24 @@ export class Complit extends LitElement {
   }
 
   private _onItemClick({currentTarget}: Event) {
-    console.log((currentTarget as HTMLInputElement)?.textContent)
+    const item = (currentTarget as HTMLInputElement)?.textContent
+    this._handleItemSelection(item as string)
   }
 
-  private _fetchData() {
-    if (this.dataResource) {
-      fetch(this.dataResource)
-        .then(response => response.json())
-        .then(data => {
-          this._data = data
-        })
-        .then(() => this._search(this.term))
-        .catch(err => console.error(err, 'data fetch failed'))
-    }
-  }
-
-
-  private _keyboardListener(e: KeyboardEvent) {
+  private _onKeyboardEvent(e: KeyboardEvent) {
     this._handleArrowNavigation(e)
     this._handleItemEnter(e)
+  }
+
+  private _handleItemSelection(item: string = '') {
+    console.log('selected item:', item)
   }
 
   private _handleItemEnter({key}: KeyboardEvent) {
     switch (key) {
       case 'Enter':
         if (this._highlightedItemIndex !== -1) {
-          console.log('selected item:', this.results[this._highlightedItemIndex])
+          this._handleItemSelection(this.results[this._highlightedItemIndex])
         }
         break
       default:
@@ -165,6 +157,18 @@ export class Complit extends LitElement {
     }
     if (typeof index !== 'undefined') {
       this._highlightedItemIndex = index < 0 ? this.results.length + index : index
+    }
+  }
+
+  private _fetchData() {
+    if (this.dataResource) {
+      fetch(this.dataResource)
+        .then(response => response.json())
+        .then(data => {
+          this._data = data
+        })
+        .then(() => this._search(this.term))
+        .catch(err => console.error(err, 'data fetch failed'))
     }
   }
 
