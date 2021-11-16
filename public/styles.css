@@ -1,11 +1,15 @@
-p {
-  background-color: lightblue;
+body {
+  background-color: #0C2340;
 }
 
 comp-lit::part(term) {
-  color: teal;
+  color: #0C2340;
 }
 
 comp-lit::part(list) {
-  list-style: none;
+  color: #76ABDF;
+}
+
+comp-lit::part(highlight) {
+  color: #99FFFF;
 }
