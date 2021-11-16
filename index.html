@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>&lt;complit&gt;</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script type="module" src="complit.bundled.js"></script>
+  </head>
+  <body>
+    <comp-lit
+      id="complit"
+      term="wat"
+      dataResource="/mock-data.json"
+    />
+
+    <script>
+      // - uncomment this to see changes -
+      // const complitEl = document.getElementById('complit')
+      // complitEl.addEventListener('results-changed', ({target: {results}}) => {
+      //   console.log('results changed:', results)
+      // })
+    </script>
+  </body>
+</html>
