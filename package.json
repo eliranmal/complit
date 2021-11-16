@@ -41,6 +41,8 @@
   "author": "Eliran Malka",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "fuzzysort": "^1.1.4",
     "lit": "^2.0.0"
   },
   "devDependencies": {
