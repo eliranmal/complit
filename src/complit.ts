@@ -180,10 +180,7 @@ export class Complit extends LitElement {
     }
   }
 
-  private async _search(term: string) {
-    if (!term) {
-      return
-    }
+  private async _search(term: string = '') {
     const results = this._parseSearchResults(
       fuzzysort.go(term, this._data),
       result => fuzzysort.highlight(result, '<b part="match">', '</b>')
