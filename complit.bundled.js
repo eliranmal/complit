@@ -88,13 +88,17 @@ class wt extends class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,i
     ol {
       overflow: auto;
       max-height: 200px;
-      margin-block-end: 0;
+      margin: 0;
       list-style-type: none;
     }
 
     ol li {
       position: relative;
       cursor: pointer;
+    }
+
+    ol li:first-of-type {
+      margin-block-start: .5em;
     }
 
     ol li.highlight:before {
