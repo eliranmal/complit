@@ -77,6 +77,9 @@ export class Complit extends LitElement {
   @state()
   protected _selectedItemIndex: number = -1
 
+  @state()
+  protected _isFocused: bool = true
+
   @property({type: String})
   term: string = ''
 
@@ -93,12 +96,13 @@ export class Complit extends LitElement {
   override connectedCallback() {
     this._fetchData()
     super.connectedCallback()
-    document.addEventListener('keydown', this._onKeyboardEvent.bind(this))
+    document.addEventListener('click', this._onDocumentClick.bind(this))
+    document.addEventListener('keydown', this._onKeyDown.bind(this))
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
-    document.removeEventListener('keydown', this._onKeyboardEvent.bind(this))
+    document.removeEventListener('keydown', this._onKeyDown.bind(this))
     this._data = []
   }
 
@@ -108,7 +112,7 @@ export class Complit extends LitElement {
         @input=${this._onInput}
       />
       <ol part="list">
-        ${this._taggedResults.map(
+        ${this._isFocused ? this._taggedResults.map(
           (datum, index) => {
             const highlighted = this._selectedItemIndex === index ? 'highlight' : ''
             return html`
@@ -119,7 +123,7 @@ export class Complit extends LitElement {
             >${unsafeHTML(datum)}</li>
             `
           }
-        )}
+        ) : null}
       </ol>
     `
   }
@@ -133,7 +137,11 @@ export class Complit extends LitElement {
     this._handleItemSelection(item as string)
   }
 
-  private _onKeyboardEvent(e: KeyboardEvent) {
+  private _onDocumentClick(e: Event) {
+    this._isFocused = Object.is(e.target, this)
+  }
+
+  private _onKeyDown(e: KeyboardEvent) {
     this._handleArrowNavigation(e)
     this._handleItemEnter(e)
   }
