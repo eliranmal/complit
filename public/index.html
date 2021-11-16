@@ -8,8 +8,18 @@
     <script type="module" src="complit.bundled.js"></script>
   </head>
   <body>
-    <comp-lit>
-      <p>This is child content</p>
-    </comp-lit>
+    <comp-lit
+      id="complit"
+      term="wat"
+      dataResource="/mock-data.json"
+    />
+
+    <script>
+      // - uncomment this to see changes -
+      // const complitEl = document.getElementById('complit')
+      // complitEl.addEventListener('results-changed', ({target: {results}}) => {
+      //   console.log('results changed:', results)
+      // })
+    </script>
   </body>
 </html>
