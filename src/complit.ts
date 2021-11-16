@@ -1,21 +1,17 @@
-/**
- * @license
- * Copyright 2019 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
+import {LitElement, html, css} from 'lit'
+import {customElement, property, state} from 'lit/decorators.js'
 
-import {LitElement, html, css} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
 
 /**
- * An example element.
+ * complit element
  *
- * @fires count-changed - Indicates when the count changes
- * @slot - This element has a slot
- * @csspart button - The button
+ * @fires results-changed - indicates when a match is found and the results are fresh
+ * @csspart input - the search term input element
+ * @csspart list - the result list element
  */
 @customElement('comp-lit')
 export class Complit extends LitElement {
+
   static override styles = css`
     :host {
       display: block;
@@ -23,47 +19,66 @@ export class Complit extends LitElement {
       padding: 16px;
       max-width: 800px;
     }
-  `;
+  `
 
-  /**
-   * The name to say "Hello" to.
-   */
+  @state()
+  protected _data: string[] = []
+
+  @property({type: String})
+  term: string = ''
+
   @property()
-  name = 'World';
+  dataResource: string = ''
 
-  /**
-   * The number of times the button has been clicked.
-   */
-  @property({type: Number})
-  count = 0;
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    if (this.dataResource) {
+      fetch(this.dataResource)
+        .then(response => response.json())
+        .then(data => {
+          this._data = data
+        })
+        .catch(err => console.error(err, 'data fetch failed'))
+    }
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+
+    this._data = []
+  }
 
   override render() {
+    this._search(this.term)
+
     return html`
-      <h1>${this.sayHello(this.name)}!</h1>
-      <button @click=${this._onClick} part="button">
-        Click Count: ${this.count}
-      </button>
-      <slot></slot>
-    `;
+      <input type="search" part="term" value="${this.term}"
+        @input=${this._onInput}
+      />
+      <ol part="list">
+        ${this._data.map(datum => html`<li>${datum}</li>`)}
+      </ol>
+    `
   }
 
-  private _onClick() {
-    this.count++;
-    this.dispatchEvent(new CustomEvent('count-changed'));
+  private _onInput({target}: Event) {
+    this._search((target as HTMLInputElement)?.value)
   }
 
-  /**
-   * Formats a greeting
-   * @param name The name to say "Hello" to
-   */
-  sayHello(name: string): string {
-    return `Hello, ${name}`;
+  private async _search(term: string) {
+    if (!term) {
+      return
+    }
+    // todo - implement fuzzy search / highlight
+    this.dispatchEvent(new CustomEvent('results-changed'))
   }
 }
 
 
 declare global {
   interface HTMLElementTagNameMap {
-    'comp-lit': Complit;
+    'comp-lit': Complit
   }
 }
