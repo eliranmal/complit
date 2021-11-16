@@ -1,4 +1,6 @@
+import fuzzysort from 'fuzzysort'
 import {LitElement, html, css} from 'lit'
+import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {customElement, property, state} from 'lit/decorators.js'
 
 
@@ -19,16 +21,26 @@ export class Complit extends LitElement {
       padding: 16px;
       max-width: 800px;
     }
+
+    ol b {
+      color: red;
+    }
   `
 
   @state()
   protected _data: string[] = []
+
+  @state()
+  protected _taggedResults: string[] = []
 
   @property({type: String})
   term: string = ''
 
   @property()
   dataResource: string = ''
+
+  @property()
+  results: string[] = []
 
 
   override connectedCallback() {
@@ -40,6 +52,7 @@ export class Complit extends LitElement {
         .then(data => {
           this._data = data
         })
+        .then(() => this._search(this.term))
         .catch(err => console.error(err, 'data fetch failed'))
     }
   }
@@ -51,14 +64,14 @@ export class Complit extends LitElement {
   }
 
   override render() {
-    this._search(this.term)
-
     return html`
       <input type="search" part="term" value="${this.term}"
         @input=${this._onInput}
       />
       <ol part="list">
-        ${this._data.map(datum => html`<li>${datum}</li>`)}
+        ${this._taggedResults.map(
+          datum => html`<li>${unsafeHTML(datum)}</li>`
+        )}
       </ol>
     `
   }
@@ -71,8 +84,25 @@ export class Complit extends LitElement {
     if (!term) {
       return
     }
-    // todo - implement fuzzy search / highlight
+    const results = this._parseSearchResults(
+      fuzzysort.go(term, this._data),
+      result => fuzzysort.highlight(result, '<b part="highlight">', '</b>')
+    )
+    this.results = results.bare
+    this._taggedResults = results.tagged
     this.dispatchEvent(new CustomEvent('results-changed'))
+  }
+
+
+  private _parseSearchResults(
+    results: Fuzzysort.Results,
+    taggingTransformer: (result: Fuzzysort.Result) => string | null)
+      : {bare: string[], tagged: string[]} {
+    return {
+      bare: results.map(({target}) => target),
+      tagged: results.map(taggingTransformer)
+        .filter(r => r ?? false) as string[],
+    }
   }
 }
 
