@@ -38,10 +38,13 @@ export class Complit extends LitElement {
     }
 
     ol {
-      overflow: auto;
-      max-height: 200px;
+      overflow-y: auto;
       margin: 0;
       list-style-type: none;
+    }
+
+    ol.expanded {
+      max-height: 200px;
     }
 
     ol li {
@@ -107,11 +110,13 @@ export class Complit extends LitElement {
   }
 
   override render() {
+    const listState = this._isFocused ? 'expanded' : 'collapsed'
+
     return html`
       <input type="search" part="term" value="${this.term}"
         @input=${this._onInput}
       />
-      <ol part="list">
+      <ol part="list ${listState}" class="${listState}">
         ${this._isFocused ? this._taggedResults.map(
           (datum, index) => {
             const highlighted = this._selectedItemIndex === index ? 'highlight' : ''
