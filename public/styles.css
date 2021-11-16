@@ -9,7 +9,16 @@
   box-sizing: border-box;
 }
 
+html,
 body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 2rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -17,6 +26,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #0C2340;
+}
+
+
+
+comp-lit {
 }
 
 comp-lit::part(term) {
@@ -28,7 +42,7 @@ comp-lit::part(list) {
 }
 
 comp-lit::part(item highlight) {
-  color: #0C2340;
+  /* text-decoration: underline; */
 }
 
 comp-lit::part(match) {

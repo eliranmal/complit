@@ -16,22 +16,38 @@ export class Complit extends LitElement {
 
   static override styles = css`
     :host {
-      display: block;
-      border: solid 1px gray;
-      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      width: max-content;
       max-width: 800px;
-    }
-
-    input {
+      padding: 1em;
+      border: solid 1px gray;
+      border-radius: 0 2em;
       font-size: 1rem;
     }
 
+    input {
+      padding: 0 1em;
+      line-height: 2;
+      font-size: 1em;
+      border-radius: 0 1em;
+    }
+
+    ol {
+      max-height: 200px;
+      overflow: auto;
+      list-style-type: none;
+    }
+
     ol li {
+      position: relative;
       cursor: pointer;
     }
 
-    ol li.highlight {
-      background-color: green;
+    ol li.highlight:before {
+      content: '>';
+      position: absolute;
+      left: -1em;
     }
 
     ol li b {
