@@ -27,6 +27,10 @@ comp-lit::part(list) {
   color: #76ABDF;
 }
 
-comp-lit::part(highlight) {
+comp-lit::part(item highlight) {
+  color: #0C2340;
+}
+
+comp-lit::part(match) {
   color: #99FFFF;
 }

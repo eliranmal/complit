@@ -30,6 +30,10 @@ export class Complit extends LitElement {
       cursor: pointer;
     }
 
+    ol li.highlight {
+      background-color: green;
+    }
+
     ol li b {
       color: red;
     }
@@ -40,6 +44,9 @@ export class Complit extends LitElement {
 
   @state()
   protected _taggedResults: string[] = []
+
+  @state()
+  protected _highlightedItemIndex: number = -1
 
   @property({type: String})
   term: string = ''
@@ -52,22 +59,14 @@ export class Complit extends LitElement {
 
 
   override connectedCallback() {
+    this._fetchData()
     super.connectedCallback()
-
-    if (this.dataResource) {
-      fetch(this.dataResource)
-        .then(response => response.json())
-        .then(data => {
-          this._data = data
-        })
-        .then(() => this._search(this.term))
-        .catch(err => console.error(err, 'data fetch failed'))
-    }
+    document.addEventListener('keydown', this._keyboardListener.bind(this))
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
-
+    document.removeEventListener('keydown', this._keyboardListener.bind(this))
     this._data = []
   }
 
@@ -78,9 +77,16 @@ export class Complit extends LitElement {
       />
       <ol part="list">
         ${this._taggedResults.map(
-          datum => html`<li
-            @click=${this._onItemClick}
-          >${unsafeHTML(datum)}</li>`
+          (datum, index) => {
+            const highlighted = this._highlightedItemIndex === index ? 'highlight' : ''
+            return html`
+            <li
+              part="item ${highlighted}"
+              class="${highlighted}"
+              @click=${this._onItemClick}
+            >${unsafeHTML(datum)}</li>
+            `
+          }
         )}
       </ol>
     `
@@ -94,13 +100,60 @@ export class Complit extends LitElement {
     console.log((currentTarget as HTMLInputElement)?.textContent)
   }
 
+  private _fetchData() {
+    if (this.dataResource) {
+      fetch(this.dataResource)
+        .then(response => response.json())
+        .then(data => {
+          this._data = data
+        })
+        .then(() => this._search(this.term))
+        .catch(err => console.error(err, 'data fetch failed'))
+    }
+  }
+
+
+  private _keyboardListener(e: KeyboardEvent) {
+    this._handleArrowNavigation(e)
+    this._handleItemEnter(e)
+  }
+
+  private _handleItemEnter({key}: KeyboardEvent) {
+    switch (key) {
+      case 'Enter':
+        if (this._highlightedItemIndex !== -1) {
+          console.log('selected item:', this.results[this._highlightedItemIndex])
+        }
+        break
+      default:
+        break
+    }
+  }
+
+  private _handleArrowNavigation({key}: KeyboardEvent) {
+    let index
+    switch (key) {
+      case 'ArrowDown':
+        index = (this._highlightedItemIndex + 1) % this.results.length
+        break
+      case 'ArrowUp':
+        index = (this._highlightedItemIndex - 1) % this.results.length
+        break
+      default:
+        break
+    }
+    if (typeof index !== 'undefined') {
+      this._highlightedItemIndex = index < 0 ? this.results.length + index : index
+    }
+  }
+
   private async _search(term: string) {
     if (!term) {
       return
     }
     const results = this._parseSearchResults(
       fuzzysort.go(term, this._data),
-      result => fuzzysort.highlight(result, '<b part="highlight">', '</b>')
+      result => fuzzysort.highlight(result, '<b part="match">', '</b>')
     )
     this.results = results.bare
     this._taggedResults = results.tagged
