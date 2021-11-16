@@ -17,9 +17,10 @@ body {
 
 body {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 2rem;
+  justify-content: flex-start;
+  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -31,6 +32,9 @@ body {
 
 
 comp-lit {
+  margin-top: calc(25vh - 2em);
+  width: min(60vw, 600px);
+  font-size: calc(.5rem + 3vmin);
 }
 
 comp-lit::part(term) {
@@ -39,6 +43,10 @@ comp-lit::part(term) {
 
 comp-lit::part(list) {
   color: #76ABDF;
+}
+
+comp-lit::part(list expanded) {
+  max-height: 50vh;
 }
 
 comp-lit::part(item highlight) {
