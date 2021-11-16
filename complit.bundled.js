@@ -73,9 +73,9 @@ class wt extends class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,i
       width: max-content;
       max-width: 800px;
       padding: 1em;
-      border: solid 1px gray;
+      border: solid 2px #aaa;
       border-radius: 0 2em;
-      font-size: 1rem;
+      font-size: 1em;
     }
 
     input {
@@ -86,8 +86,9 @@ class wt extends class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,i
     }
 
     ol {
-      max-height: 200px;
       overflow: auto;
+      max-height: 200px;
+      margin-block-end: 0;
       list-style-type: none;
     }
 
@@ -97,9 +98,13 @@ class wt extends class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,i
     }
 
     ol li.highlight:before {
-      content: '>';
+      content: '\\0000bb';
       position: absolute;
       left: -1em;
+    }
+
+    ol li:hover {
+      text-decoration: underline;
     }
 
     ol li b {
