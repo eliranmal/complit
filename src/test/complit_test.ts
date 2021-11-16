@@ -1,62 +1,63 @@
-/**
- * @license
- * Copyright 2021 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
+import {Complit} from '../complit.js'
 
-import {Complit} from '../complit.js';
-
-import {fixture, assert} from '@open-wc/testing';
-import {html} from 'lit/static-html.js';
+import {fixture, assert/*, oneEvent*/} from '@open-wc/testing'
+import {html} from 'lit/static-html.js'
 
 suite('complit', () => {
   test('is defined', () => {
-    const el = document.createElement('comp-lit');
-    assert.instanceOf(el, Complit);
-  });
+    const el = document.createElement('comp-lit')
+    assert.instanceOf(el, Complit)
+  })
 
   test('renders with default values', async () => {
-    const el = await fixture(html`<comp-lit></comp-lit>`);
+    const el = await fixture(html`<comp-lit />`)
     assert.shadowDom.equal(
       el,
       `
-      <h1>Hello, World!</h1>
-      <button part="button">Click Count: 0</button>
-      <slot></slot>
+      <input part="term" type="search" value="" />
+      <ol part="list"></ol>
     `
-    );
-  });
+    )
+  })
 
-  test('renders with a set name', async () => {
-    const el = await fixture(html`<comp-lit name="Test"></comp-lit>`);
+  test('renders with a set term', async () => {
+    const el = await fixture(html`<comp-lit term="test" ._data=${['yo']} />`) as Complit
     assert.shadowDom.equal(
       el,
       `
-      <h1>Hello, Test!</h1>
-      <button part="button">Click Count: 0</button>
-      <slot></slot>
+      <input part="term" type="search" value="test" />
+      <ol part="list">
+        <li>yo</li>
+      </ol>
     `
-    );
-  });
+    )
+    assert(el.term === 'test')
+  })
 
-  test('handles a click', async () => {
-    const el = (await fixture(html`<comp-lit></comp-lit>`)) as Complit;
-    const button = el.shadowRoot!.querySelector('button')!;
-    button.click();
-    await el.updateComplete;
-    assert.shadowDom.equal(
-      el,
-      `
-      <h1>Hello, World!</h1>
-      <button part="button">Click Count: 1</button>
-      <slot></slot>
-    `
-    );
-  });
+  // test.only('handles enter key', async () => {
+  //   const el = (await fixture(html`<comp-lit term="test" />`)) as Complit
+  //   // const input = el.shadowRoot!.querySelector('input')!
+  //   // input.focus()
+  //   // input.value = 'wat'
+  //   // console.log('input.value:', input.value)
+  //   await el.updateComplete
+  //   // const dispatched = await document.dispatchEvent(new KeyboardEvent('keydown', {key: 13, code: 'Enter'}))
+  //   // console.log('dispatched:', dispatched)
+  //   const result = await oneEvent(el, 'results-changed')
+  //   console.log('result:', result)
+  //   assert(result)
+  //   assert.shadowDom.equal(
+  //     el,
+  //     `
+  //     <input part="term" type="search" value="" />
+  //     <ol part="list"></ol>
+  //   `
+  //   )
+  // })
 
   test('styling applied', async () => {
-    const el = (await fixture(html`<comp-lit></comp-lit>`)) as Complit;
-    await el.updateComplete;
-    assert.equal(getComputedStyle(el).paddingTop, '16px');
-  });
-});
+    const el = (await fixture(html`<comp-lit></comp-lit>`)) as Complit
+    await el.updateComplete
+    assert.equal(getComputedStyle(el).paddingTop, '16px')
+  })
+})
